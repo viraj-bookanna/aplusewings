@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="lk.live.aplusewings">
+
+    <!-- සම්පූර්ණ ජාල ප්‍රවේශය -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/aebw"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:largeHeap="true"
+        android:name=".Applications"
+        android:resizeableActivity="true"
+		android:theme="@android:style/Theme.NoTitleBar"
+		android:networkSecurityConfig="@xml/network_security_config"
+		>
+
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name">
+
+            <intent-filter>
+
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+
+            </intent-filter>
+
+        </activity>
+		<activity
+			android:name=".MainActivity"
+			/>
+		<activity
+			android:name=".LoginActivity"
+			/>
+
+        <activity
+            android:name=".DebugActivity"
+            android:screenOrientation="portrait"/>
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="4.0"/>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#FF000000">
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:layout_margin="10dp"
+		android:background="#FF000000">
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Log in to continue"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:textColor="#FFEC00FF"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="top|left"
+			android:layout_marginTop="15dp">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Select App"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_marginRight="10dp"
+				android:textColor="#FF635858"/>
+
+			<Spinner
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/login_select_app"
+				android:paddingLeft="10dp"
+				android:paddingRight="10dp"
+				android:background="#FF4A4A4A"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="15dp">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Input Credentials"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:textColor="#FF5B5252"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Username"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:textColor="#FF544242"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center">
+
+			<EditText
+				android:layout_width="wrap_content"
+				android:ems="10"
+				android:layout_height="wrap_content"
+				android:id="@+id/login_username"
+				android:gravity="top|left"
+				android:layout_weight="1.0"
+				android:textColor="#FF00FF00"
+				android:background="#FF222222"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:hint="username"
+				android:maxLines="1"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Password"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:textColor="#FF4A4040"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center">
+
+			<EditText
+				android:layout_width="wrap_content"
+				android:ems="10"
+				android:layout_height="wrap_content"
+				android:id="@+id/login_password"
+				android:gravity="top|left"
+				android:layout_weight="1.0"
+				android:textColor="#FF00FF00"
+				android:background="#FF222222"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:hint="password"
+				android:maxLines="1"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="left|center">
+
+			<CheckBox
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/login_remember"
+				android:background="#CC221F1F"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Remember"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:id="@+id/login_for_remember"
+				android:textColor="#FF504141"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center">
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Login"
+				android:id="@+id/login_btn_login"
+				android:background="#FF372201"
+				android:textColor="#FFA8911A"
+				android:paddingLeft="15dp"
+				android:paddingRight="15dp"
+				android:padding="10dp"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</LinearLayout>
+

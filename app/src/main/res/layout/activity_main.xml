@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#FF000000">
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="#FF000000"
+		android:gravity="center"
+		android:layout_margin="10dp">
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/main_logout"
+			android:gravity="right">
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="logout"
+				android:id="@+id/main_btn_logout"
+				android:paddingLeft="15dp"
+				android:paddingRight="15dp"
+				android:padding="10dp"
+				android:textColor="#FFFF0000"
+				android:background="#FF191919"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Select App"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_marginRight="10dp"
+				android:textColor="#FF3D3D3D"/>
+
+			<Spinner
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/main_select_app"
+				android:paddingLeft="15dp"
+				android:paddingRight="15dp"
+				android:background="#FF383838"
+				android:paddingTop="6dp"
+				android:paddingBottom="6dp"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Video Code"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:textColor="#FF4A4242"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center">
+
+			<EditText
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/main_vid_code"
+				android:layout_weight="1.0"
+				android:background="#FF222222"
+				android:textColor="#FF00FF00"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:hint="video code"
+				android:maxLines="1"
+				android:inputType="textFilter"/>
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="paste"
+				android:id="@+id/main_vid_code_paste"
+				android:paddingLeft="15dp"
+				android:paddingRight="15dp"
+				android:padding="10dp"
+				android:textColor="#FF3F3F3F"
+				android:background="#FF3F1C0F"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Select Quality"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_marginRight="10dp"
+				android:textColor="#FF3B3B3B"/>
+
+			<Spinner
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/main_select_quality"
+				android:paddingLeft="15dp"
+				android:paddingRight="15dp"
+				android:background="#FF3C3C3C"
+				android:paddingTop="6dp"
+				android:paddingBottom="6dp"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:layout_marginTop="10dp">
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Generate Link"
+				android:id="@+id/main_btn_generate"
+				android:paddingLeft="15dp"
+				android:paddingRight="15dp"
+				android:background="#FF372201"
+				android:textColor="#FFA8911A"
+				android:padding="10dp"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="200dp"
+			android:gravity="center">
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:id="@+id/main_output"
+				android:gravity="center"
+				android:textColor="#FF00FF00"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center">
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="copy"
+				android:id="@+id/main_btn_output_copy"
+				android:paddingLeft="15dp"
+				android:paddingRight="15dp"
+				android:padding="10dp"
+				android:textColor="#FF515151"
+				android:background="#FF281515"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</LinearLayout>
+
