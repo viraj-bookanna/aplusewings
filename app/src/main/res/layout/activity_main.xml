@@ -41,6 +41,63 @@
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:text="Proxy"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_marginRight="10dp"
+				android:textColor="#FF3D3D3D"/>
+
+			<Spinner
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/main_select_proxy"
+				android:paddingLeft="15dp"
+				android:paddingRight="15dp"
+				android:background="#FF383838"
+				android:paddingTop="6dp"
+				android:paddingBottom="6dp"/>
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="start"
+				android:id="@+id/main_proxy_toggle"
+				android:paddingLeft="15dp"
+				android:paddingRight="15dp"
+				android:padding="10dp"
+				android:textColor="#FF3F3F3F"
+				android:background="#FF3F1C0F"/>
+			
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center">
+
+			<EditText
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/main_proxy_url"
+				android:layout_weight="1.0"
+				android:background="#FF222222"
+				android:textColor="#FF00FF00"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:hint="web proxy url"
+				android:maxLines="1"
+				android:inputType="textFilter"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
 				android:text="Select App"
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				android:layout_marginRight="10dp"
@@ -55,20 +112,6 @@
 				android:background="#FF383838"
 				android:paddingTop="6dp"
 				android:paddingBottom="6dp"/>
-
-		</LinearLayout>
-
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Video Code"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:textColor="#FF4A4242"/>
 
 		</LinearLayout>
 
@@ -153,13 +196,13 @@
 		<LinearLayout
 			android:orientation="horizontal"
 			android:layout_width="match_parent"
-			android:layout_height="200dp"
+			android:layout_height="100dp"
 			android:gravity="center">
 
 			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:id="@+id/main_output"
 				android:gravity="center"
 				android:textColor="#FF00FF00"/>

@@ -14,6 +14,11 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import org.json.JSONObject;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 
 public class request extends AsyncTask<String, Void, String> {
 	public Context context;
@@ -41,46 +46,55 @@ public class request extends AsyncTask<String, Void, String> {
 
 	@Override
 	protected String doInBackground(String... params) {
-		String response = "";
-		try{
-			HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
-			con.setRequestMethod(method);
-			con.setUseCaches(false);
-			con.setDoInput(true);
-			if(headers != null){
+		String responseString = "";
+
+
+		try {
+			OkHttpClient client = new OkHttpClient();
+
+			Request.Builder builder = new Request.Builder()
+                .url(url);
+
+			// Add headers if available
+			if (headers != null) {
 				Iterator<String> keys = headers.keys();
-				while(keys.hasNext()) {
+				while (keys.hasNext()) {
 					String key = keys.next();
 					String value = headers.getString(key);
-					con.setRequestProperty(key, value);
+					builder.addHeader(key, value);
 				}
 			}
-			if(method == "POST"){
-				con.setDoOutput(true);
-				con.setRequestProperty("Content-Length", ""+postData.length());
-				OutputStream outputStream = con.getOutputStream(); 
-				Writer writer = new OutputStreamWriter(outputStream);
-				writer.write(postData);
-				writer.flush();
-				writer.close();
+
+			// Handle GET / POST
+			if ("POST".equalsIgnoreCase(method)) {
+				RequestBody body = RequestBody.create(
+					null,
+                    postData
+				);
+				builder.post(body);
+			} else {
+				builder.get();
 			}
-			int responseCode = con.getResponseCode();
-			if (responseCode == HttpsURLConnection.HTTP_OK) {
-				String line;
-				BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-				while ((line = br.readLine()) != null) {
-					response += line;
+
+			// Build request
+			Request request = builder.build();
+
+			// Execute
+			try (Response response = client.newCall(request).execute()) {
+				if (response.isSuccessful()) {
+					responseString = response.body().string();
+				} else {
+					responseString = "HTTP Error: " + response.code();
 				}
 			}
-			else {
-				response = "";    
-			}
+		} catch (Exception e) {
+			responseString = "Exception: " + e.toString();
 		}
-		catch(Exception e){
-			response = e.toString();
-		}
-		return response;
+
+		return responseString;
 	}
+
+
 
 	@Override
 	protected void onPostExecute(String result) {
@@ -93,3 +107,4 @@ public class request extends AsyncTask<String, Void, String> {
 	}
 
 }
+
