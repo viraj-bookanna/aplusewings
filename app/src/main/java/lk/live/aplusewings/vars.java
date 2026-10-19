@@ -21,5 +21,12 @@ public class vars {
 	}
     public static String signature = "Wft/u7OWYYaJxGguHQqZZA==";
     public static boolean signature_ok = true;
+
+    // Universal "who am I" GQL request body. Works against every brand's /api/gql
+    // (api.apluseducation.lk, api.ewings.lk, api.combinedmaths.lk, api.imsedu.lk).
+    // Used to backfill student_id after a token-only callback deep-link.
+    public static String meQuery =
+        "{\"operationName\":\"Me\",\"variables\":{},"
+        + "\"query\":\"query Me { me { _id fname lname email role status created_at updated_at } }\"}";
 }
 

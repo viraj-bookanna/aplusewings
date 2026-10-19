@@ -10,6 +10,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,28 +58,46 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
 		remember.setChecked(!remember.isChecked());
 	}
 	public void login() {
+		// Guard against cold-start where config hasn't finished downloading or
+		// the app list is empty.
+		SharedPreferences sp = getSharedPreferences("aplusewings", 0);
+		if (sp.getString("app_config", "").length() == 0) {
+			Toast.makeText(this, "config still loading, please wait...", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		Object sel = select_app.getSelectedItem();
+		String brand = (sel != null) ? sel.toString() : sp.getString("default_app", "Aplus");
+
 		Matcher matcher = Pattern.compile("^(?:\\+?94|0)?(7[01245678]\\d{7})$").matcher(input_usrname.getText().toString());
 		if (!matcher.matches()) {
 			Toast.makeText(getApplicationContext(), "Invalid phone number", Toast.LENGTH_LONG).show();
 			return;
 		}
-		String stringBuffer = new StringBuffer().append("+94").append(matcher.group(1)).toString();
+		String stringBuffer = "+94" + matcher.group(1);
 		String obj = input_pass.getText().toString();
+		String apiUrl       = util.getConfig(this, brand, "apiURL");
+		String loginFmt     = util.getConfig(this, brand, "loginStudent");
+		if (apiUrl == null || loginFmt == null) {
+			Toast.makeText(this, "config missing for " + brand, Toast.LENGTH_LONG).show();
+			return;
+		}
 		request requestVar = new request();
 		requestVar.delegate = this;
 		requestVar.context = this;
 		requestVar.method = "POST";
 		requestVar.message = "Authenticating...";
 		requestVar.id = "login";
-		requestVar.url = util.getConfig(this, select_app.getSelectedItem().toString(), "apiURL");
-		requestVar.headers = util.getConfigArr(this, select_app.getSelectedItem().toString(), "headers");
-		requestVar.postData = String.format(util.getConfig(this, select_app.getSelectedItem().toString(), "loginStudent"), stringBuffer, obj);
+		requestVar.url = apiUrl;
+		requestVar.headers = util.getConfigArr(this, brand, "headers");
+		requestVar.postData = String.format(loginFmt, stringBuffer, obj);
 		requestVar.execute();
 	}
 
     public void onProcessFinish(String str, String str2) {
-        SharedPreferences.Editor edit = getSharedPreferences("aplusewings", 0).edit();
-        String obj = this.select_app.getSelectedItem().toString();
+        SharedPreferences sp = getSharedPreferences("aplusewings", 0);
+        SharedPreferences.Editor edit = sp.edit();
+        Object sel = (this.select_app != null) ? this.select_app.getSelectedItem() : null;
+        String obj = (sel != null) ? sel.toString() : sp.getString("default_app", "Aplus");
         if (str2.equals("login")) {
             try {
                 JSONObject jSONObject = new JSONObject(str).getJSONObject("data");
@@ -101,7 +120,14 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
                 requestVar.message = "Registering device";
                 requestVar.url = util.getConfig(this, obj, "devReg");
                 requestVar.headers = util.authorizeHeadersMy(this, obj, util.getConfigArr(this, obj, "headers"));
-                requestVar.postData = String.format("student_id=%s&u=%s&p=%s", string2, URLEncoder.encode(this.input_usrname.getText().toString()), URLEncoder.encode(this.input_pass.getText().toString()));
+                try {
+                    String uEnc = URLEncoder.encode(this.input_usrname.getText().toString(), StandardCharsets.UTF_8.name());
+                    String pEnc = URLEncoder.encode(this.input_pass.getText().toString(), StandardCharsets.UTF_8.name());
+                    requestVar.postData = String.format("student_id=%s&u=%s&p=%s", string2, uEnc, pEnc);
+                } catch (java.io.UnsupportedEncodingException uee) {
+                    requestVar.postData = String.format("student_id=%s&u=%s&p=%s", string2,
+                        this.input_usrname.getText().toString(), this.input_pass.getText().toString());
+                }
                 requestVar.execute(new String[0]);
                 return;
             } catch (Exception e) {
@@ -115,17 +141,27 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponse {
             }
         }
         if (str2.equals("regDevice")) {
+            boolean ok = false;
             try {
-                if (new JSONObject(str).getBoolean("ok")) {
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-					finish();
-                }
+                ok = new JSONObject(str).getBoolean("ok");
             } catch (Exception e4) {
+                // malformed response -> treat as failure, keep the login creds we
+                // already stored in the "login" branch so the user can retry.
             }
-            edit.putBoolean(new StringBuffer().append(obj).append("_logged_in").toString(), true);
-            edit.putString(new StringBuffer().append(obj).append("_auth").toString(), "");
-            edit.putString(new StringBuffer().append(obj).append("_student_id").toString(), "");
-            edit.apply();
+            if (ok) {
+                // Just confirm logged-in state. DO NOT touch _auth / _student_id -
+                // the "login" branch already saved them to prefs, and the
+                // original code's `edit.putString("_auth", "")` here was a
+                // copy-paste bug that wiped the token right after storing it.
+                edit.putBoolean(obj + "_logged_in", true);
+                edit.apply();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            } else {
+                // Device registration refused by the backend.
+                Toast.makeText(getApplicationContext(),
+                    "device registration failed", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

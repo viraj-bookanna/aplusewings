@@ -1,27 +1,62 @@
 apply plugin: 'com.android.application'
 
+// Load release signing credentials from keystore.properties (gitignored).
+// Falls back to the debug signing config if the file is absent so CI / fresh
+// clones can still build an unsigned-release-equivalent debug APK.
+def keystorePropsFile = rootProject.file("keystore.properties")
+def keystoreProps = new Properties()
+if (keystorePropsFile.exists()) {
+    keystoreProps.load(new FileInputStream(keystorePropsFile))
+}
+
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.0"
+    namespace "lk.live.aplusewings"
+    compileSdkVersion 34
+    buildToolsVersion "34.0.0"
 
     defaultConfig {
         applicationId "lk.live.aplusewings"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 34
+        versionCode 3
+        versionName "3.0"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    tasks.withType(JavaCompile).configureEach {
+        options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+    }
+    signingConfigs {
+        if (keystorePropsFile.exists()) {
+            release {
+                storeFile file(keystoreProps["storeFile"])
+                storePassword keystoreProps["storePassword"]
+                keyAlias keystoreProps["keyAlias"]
+                keyPassword keystoreProps["keyPassword"]
+                // Enable v1 + v2 + v3 so the APK installs across all min-21..34 devices.
+                enableV1Signing true
+                enableV2Signing true
+                enableV3Signing true
+            }
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (keystorePropsFile.exists()) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }
 
 dependencies {
-    compile 'androidx.appcompat:appcompat:1.0.0'
-	compile 'com.google.android.material:material:1.0.0'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-	implementation 'org.nanohttpd:nanohttpd:2.3.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'org.nanohttpd:nanohttpd:2.3.1'
 }

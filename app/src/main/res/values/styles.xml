@@ -1,11 +1,99 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <!-- Material theme so MaterialCardView + CircularProgressIndicator inflate.
+         The <Button> auto-swap-to-MaterialButton problem is sidestepped at the
+         XML level: all buttons use <androidx.appcompat.widget.AppCompatButton>
+         tags, which MaterialComponentsViewInflater won't rewrite. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/term_green</item>
+        <item name="colorPrimaryVariant">@color/term_green_dim</item>
+        <item name="colorSecondary">@color/term_green</item>
+        <item name="colorSecondaryVariant">@color/term_green_dim</item>
+        <item name="colorOnPrimary">@color/bg_root</item>
+        <item name="colorOnSecondary">@color/bg_root</item>
+        <item name="colorSurface">@color/bg_surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="android:colorBackground">@color/bg_root</item>
+        <item name="android:statusBarColor">@color/bg_root</item>
+        <item name="android:navigationBarColor">@color/bg_root</item>
+        <item name="android:windowBackground">@color/bg_root</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_label</item>
+    </style>
+
+    <style name="SectionHeader">
+        <item name="android:textColor">@color/text_label</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.15</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:layout_marginBottom">6dp</item>
+    </style>
+
+    <style name="Card">
+        <item name="cardBackgroundColor">@color/bg_surface</item>
+        <item name="cardCornerRadius">14dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="contentPadding">16dp</item>
+        <item name="strokeColor">@color/bg_stroke</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="TerminalInput" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:textColor">@color/term_green</item>
+        <item name="android:textColorHint">@color/text_label</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textCursorDrawable">@null</item>
+    </style>
+
+    <style name="TerminalSpinner">
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:popupBackground">@color/bg_surface_elev</item>
+    </style>
+
+    <!-- Primary CTA: terminal-green text on dark-green bg. High contrast guaranteed. -->
+    <style name="PrimaryButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="android:textColor">@color/cta_text</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">18dp</item>
+        <item name="android:paddingRight">18dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <!-- Ghost (secondary) button -->
+    <style name="GhostButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_button_ghost</item>
+        <item name="android:textColor">@color/ghost_text</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="DangerGhostButton" parent="GhostButton">
+        <item name="android:textColor">@color/danger_text</item>
+        <item name="android:background">@drawable/bg_button_danger</item>
     </style>
 
 </resources>

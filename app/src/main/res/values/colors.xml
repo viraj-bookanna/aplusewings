@@ -1,6 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!-- Terminal palette: pure black bg, neon green primary, muted amber-gold accents. -->
+
+    <!-- Surfaces -->
+    <color name="bg_root">#000000</color>
+    <color name="bg_surface">#0A0E0A</color>        <!-- very dark green-tinted -->
+    <color name="bg_surface_elev">#101810</color>
+    <color name="bg_input">#0D120D</color>
+    <color name="bg_divider">#1A241A</color>
+    <color name="bg_stroke">#243324</color>
+
+    <!-- Terminal green: used for primary interactive text & CTA accents -->
+    <color name="term_green">#00FF9C</color>
+    <color name="term_green_dim">#00B86E</color>
+    <color name="term_green_soft">#004A2E</color>  <!-- bg tint for pressed/active -->
+
+    <!-- Muted amber/gold: subtle accent only (title text, nothing critical) -->
+    <color name="amber_gold">#D4B547</color>
+    <color name="amber_gold_dim">#8B7420</color>
+
+    <!-- Primary CTA button: green-on-dark-green terminal look -->
+    <color name="cta_bg">#001A0F</color>
+    <color name="cta_stroke">#00B86E</color>
+    <color name="cta_text">#00FF9C</color>
+    <color name="cta_pressed_bg">#003A24</color>
+
+    <!-- Ghost buttons -->
+    <color name="ghost_bg">#0F1710</color>
+    <color name="ghost_stroke">#243324</color>
+    <color name="ghost_text">#00FF9C</color>
+    <color name="ghost_pressed_bg">#172218</color>
+
+    <!-- Danger (logout) -->
+    <color name="danger_text">#FF6B6B</color>
+    <color name="danger_bg">#140808</color>
+    <color name="danger_stroke">#3A1818</color>
+
+    <!-- Text -->
+    <color name="text_primary">#F1F1F1</color>
+    <color name="text_secondary">#8FA68F</color>
+    <color name="text_label">#5B7A5B</color>
+    <color name="text_disabled">#2F3A2F</color>
+    <color name="text_error">#FF6B6B</color>
+
+    <!-- Legacy aliases so inflators keep resolving -->
+    <color name="colorPrimary">@color/term_green</color>
+    <color name="colorPrimaryDark">@color/term_green_dim</color>
+    <color name="colorAccent">@color/term_green</color>
+    <color name="brand_primary">@color/term_green</color>
+    <color name="brand_primary_dark">@color/term_green_dim</color>
+    <color name="brand_accent">@color/term_green</color>
+    <color name="brand_accent_dark">@color/term_green_dim</color>
+    <color name="hacker_orange">@color/amber_gold</color>
+    <color name="hacker_orange_dim">@color/amber_gold_dim</color>
+    <color name="hacker_orange_shadow">@color/cta_bg</color>
 </resources>

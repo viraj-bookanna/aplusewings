@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -117,13 +118,28 @@ public class ProxyServer extends NanoHTTPD {
     @Override
     public Response serve(IHTTPSession session) {
         try {
+            // Pre-handle CORS preflight - some players (notably hls.js in a
+            // webview, and some ExoPlayer configurations) issue an OPTIONS
+            // against the segment URL before the GET. If we don't answer here,
+            // reqdata stays null and we 400 out.
+            if (Method.OPTIONS.equals(session.getMethod())) {
+                Response resp = newFixedLengthResponse(Response.Status.OK, "text/plain", "");
+                resp.addHeader("Access-Control-Allow-Origin",  "*");
+                resp.addHeader("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS");
+                resp.addHeader("Access-Control-Allow-Headers", "*");
+                resp.addHeader("Access-Control-Max-Age",       "86400");
+                return resp;
+            }
+
             String reqdata = null;
 
-            // Handle different request methods
-            if (Method.GET.equals(session.getMethod())) {
-                // GET request: reqdata is in query string
-                reqdata = session.getParms().get("reqdata");
-                Log.d(TAG, "GET request, reqdata from query: " + reqdata);
+            // Handle different request methods - treat HEAD identically to GET so
+            // players that probe segment size with HEAD get a proper response
+            // instead of "Missing reqdata parameter" / 400.
+            if (Method.GET.equals(session.getMethod())
+                    || Method.HEAD.equals(session.getMethod())) {
+                reqdata = firstParam(session, "reqdata");
+                Log.d(TAG, session.getMethod() + " request, reqdata from query: " + reqdata);
             } 
             else if (Method.POST.equals(session.getMethod())) {
                 // Check content type to determine how to parse
@@ -133,7 +149,7 @@ public class ProxyServer extends NanoHTTPD {
                     // Form data - parse normally
                     Map<String, String> files = new HashMap<>();
                     session.parseBody(files);
-                    reqdata = session.getParms().get("reqdata");
+                    reqdata = firstParam(session, "reqdata");
                     Log.d(TAG, "POST form data, reqdata: " + reqdata);
                 } 
                 else {
@@ -321,6 +337,17 @@ public class ProxyServer extends NanoHTTPD {
 			return newFixedLengthResponse(fi.iki.elonen.NanoHTTPD.Response.Status.INTERNAL_ERROR, 
 										  "text/plain", "Unexpected error: " + e.toString());
 		}
+	}
+
+	/**
+	 * Return the first value for a given parameter from NanoHTTPD's
+	 * {@code getParameters()} map. Replaces the deprecated {@code getParms()}
+	 * which returned a flat {@code Map<String,String>} and silently dropped
+	 * repeated keys.
+	 */
+	private static String firstParam(IHTTPSession session, String key) {
+		List<String> values = session.getParameters().get(key);
+		return (values == null || values.isEmpty()) ? null : values.get(0);
 	}
 }
 

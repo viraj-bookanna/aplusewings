@@ -1,11 +1,17 @@
 <?xml version='1.0' encoding='utf-8'?>
 <manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="lk.live.aplusewings">
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+	<!-- API 34+: per-type foreground-service permission is now mandatory.
+	     The in-app NanoHTTPD proxy service declares foregroundServiceType="dataSync"
+	     below, so we must also hold FOREGROUND_SERVICE_DATA_SYNC or startForeground
+	     will throw SecurityException on Android 14. -->
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+	<!-- API 33+: POST_NOTIFICATIONS is a runtime permission; also declared here
+	     so the system knows to show a grant prompt. -->
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 	
     <application
@@ -22,18 +28,38 @@
 
         <activity
             android:name="lk.live.aplusewings.SplashActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:exported="true">
             <intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <!-- Deep-link schemes used by the four brand websites to "open in app" -->
+            <!-- Lesson handoff: <scheme>://lessonId=<id>&url=<passcode> -->
+            <!-- Auth callback:  <scheme>://callback?token=<accessToken>  -->
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="aplus-player"/>
+                <data android:scheme="ewings-player"/>
+                <data android:scheme="sailingpen-player"/>
+                <data android:scheme="ims-media-player"/>
+                <data android:scheme="combinedmaths-player"/>
+                <data android:scheme="ims-player"/>
+            </intent-filter>
         </activity>
 		<activity
 			android:name="lk.live.aplusewings.LoginActivity"
+			android:exported="false"
 			/>
 		<activity
 			android:name="lk.live.aplusewings.MainActivity"
+			android:launchMode="singleTask"
+			android:exported="false"
 			/>
 		<service
 			android:name="lk.live.corsproxy.ProxyService"

@@ -1,234 +1,321 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:background="#FF000000">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_root"
+    android:fillViewport="true">
 
-	<LinearLayout
-		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:background="#FF000000"
-		android:gravity="center"
-		android:layout_margin="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/main_logout"
-			android:gravity="right">
+        <!-- =========== HEADER =========== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
 
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="logout"
-				android:id="@+id/main_btn_logout"
-				android:paddingLeft="15dp"
-				android:paddingRight="15dp"
-				android:padding="10dp"
-				android:textColor="#FFFF0000"
-				android:background="#FF191919"/>
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_icon_tile">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:scaleType="centerInside" />
+            </FrameLayout>
 
-		</LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="@color/hacker_orange"
+                    android:textSize="16sp"
+                    android:fontFamily="monospace"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.05" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="&gt; playback link generator"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace" />
+            </LinearLayout>
 
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/main_btn_logout"
+                style="@style/DangerGhostButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="logout" />
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Proxy"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:layout_marginRight="10dp"
-				android:textColor="#FF3D3D3D"/>
+            <!-- Legacy id referenced by MainActivity.findViewById -->
+            <LinearLayout
+                android:id="@+id/main_logout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone" />
+        </LinearLayout>
 
-			<Spinner
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/main_select_proxy"
-				android:paddingLeft="15dp"
-				android:paddingRight="15dp"
-				android:background="#FF383838"
-				android:paddingTop="6dp"
-				android:paddingBottom="6dp"/>
+        <!-- =========== PLAYBACK CARD =========== -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Card">
 
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="start"
-				android:id="@+id/main_proxy_toggle"
-				android:paddingLeft="15dp"
-				android:paddingRight="15dp"
-				android:padding="10dp"
-				android:textColor="#FF3F3F3F"
-				android:background="#FF3F1C0F"/>
-			
-		</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center">
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="platform" />
 
-			<EditText
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/main_proxy_url"
-				android:layout_weight="1.0"
-				android:background="#FF222222"
-				android:textColor="#FF00FF00"
-				android:paddingTop="10dp"
-				android:paddingBottom="10dp"
-				android:hint="web proxy url"
-				android:maxLines="1"
-				android:inputType="textFilter"/>
+                <Spinner
+                    android:id="@+id/main_select_app"
+                    style="@style/TerminalSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-		</LinearLayout>
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="video code"
+                    android:layout_marginTop="16dp" />
 
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Select App"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:layout_marginRight="10dp"
-				android:textColor="#FF3D3D3D"/>
+                    <EditText
+                        android:id="@+id/main_vid_code"
+                        style="@style/TerminalInput"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="paste code or open in app"
+                        android:inputType="text"
+                        android:maxLines="1" />
 
-			<Spinner
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/main_select_app"
-				android:paddingLeft="15dp"
-				android:paddingRight="15dp"
-				android:background="#FF383838"
-				android:paddingTop="6dp"
-				android:paddingBottom="6dp"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/main_vid_code_paste"
+                        style="@style/GhostButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:text="paste" />
+                </LinearLayout>
 
-		</LinearLayout>
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="quality"
+                    android:layout_marginTop="16dp" />
 
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center">
+                <Spinner
+                    android:id="@+id/main_select_quality"
+                    style="@style/TerminalSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-			<EditText
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/main_vid_code"
-				android:layout_weight="1.0"
-				android:background="#FF222222"
-				android:textColor="#FF00FF00"
-				android:paddingTop="10dp"
-				android:paddingBottom="10dp"
-				android:hint="video code"
-				android:maxLines="1"
-				android:inputType="textFilter"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/main_btn_generate"
+                    style="@style/PrimaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="&gt; generate link" />
 
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="paste"
-				android:id="@+id/main_vid_code_paste"
-				android:paddingLeft="15dp"
-				android:paddingRight="15dp"
-				android:padding="10dp"
-				android:textColor="#FF3F3F3F"
-				android:background="#FF3F1C0F"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-		</LinearLayout>
+        <!-- =========== OUTPUT CARD =========== -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            style="@style/Card">
 
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Select Quality"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:layout_marginRight="10dp"
-				android:textColor="#FF3B3B3B"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        style="@style/SectionHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="0dp"
+                        android:text="output" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/main_btn_output_copy"
+                        style="@style/GhostButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:text="copy" />
+                </LinearLayout>
 
-			<Spinner
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/main_select_quality"
-				android:paddingLeft="15dp"
-				android:paddingRight="15dp"
-				android:background="#FF3C3C3C"
-				android:paddingTop="6dp"
-				android:paddingBottom="6dp"/>
+                <TextView
+                    android:id="@+id/main_output"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="96dp"
+                    android:gravity="center"
+                    android:padding="14dp"
+                    android:textIsSelectable="true"
+                    android:textColor="@color/term_green"
+                    android:textSize="12sp"
+                    android:fontFamily="monospace"
+                    android:background="@drawable/bg_output"
+                    android:text="awaiting input..." />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-		</LinearLayout>
+        <!-- =========== PROXY CARD (collapsible) =========== -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
+            style="@style/Card">
 
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center"
-			android:layout_marginTop="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Generate Link"
-				android:id="@+id/main_btn_generate"
-				android:paddingLeft="15dp"
-				android:paddingRight="15dp"
-				android:background="#FF372201"
-				android:textColor="#FFA8911A"
-				android:padding="10dp"/>
+                <!-- Header row: toggle expansion -->
+                <LinearLayout
+                    android:id="@+id/main_proxy_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true">
 
-		</LinearLayout>
+                    <TextView
+                        style="@style/SectionHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="0dp"
+                        android:text="proxy (advanced)" />
 
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="100dp"
-			android:gravity="center">
+                    <TextView
+                        android:id="@+id/main_proxy_chevron"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="[ + ]"
+                        android:textColor="@color/term_green"
+                        android:fontFamily="monospace"
+                        android:textSize="13sp" />
+                </LinearLayout>
 
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:textAppearance="?android:attr/textAppearanceSmall"
-				android:id="@+id/main_output"
-				android:gravity="center"
-				android:textColor="#FF00FF00"/>
+                <!-- Expanded body (hidden by default) -->
+                <LinearLayout
+                    android:id="@+id/main_proxy_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_marginTop="12dp">
 
-		</LinearLayout>
+                    <TextView
+                        style="@style/SectionHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="mode" />
 
-		<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="copy"
-				android:id="@+id/main_btn_output_copy"
-				android:paddingLeft="15dp"
-				android:paddingRight="15dp"
-				android:padding="10dp"
-				android:textColor="#FF515151"
-				android:background="#FF281515"/>
+                        <Spinner
+                            android:id="@+id/main_select_proxy"
+                            style="@style/TerminalSpinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content" />
 
-		</LinearLayout>
+                        <!-- Visibility toggled by MainActivity: shown only when mode=Local -->
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/main_proxy_toggle"
+                            style="@style/GhostButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:text="start" />
+                    </LinearLayout>
 
-	</LinearLayout>
+                    <!-- Visibility toggled by MainActivity: shown only when mode=Custom -->
+                    <LinearLayout
+                        android:id="@+id/main_proxy_url_wrap"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="12dp">
 
-</LinearLayout>
+                        <TextView
+                            style="@style/SectionHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="custom url" />
 
+                        <EditText
+                            android:id="@+id/main_proxy_url"
+                            style="@style/TerminalInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="http://your-proxy/?reqdata="
+                            android:inputType="textUri"
+                            android:maxLines="1" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>

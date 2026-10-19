@@ -27,7 +27,18 @@ public class ProxyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        startForegroundServiceWithNotification();
+        try {
+            startForegroundServiceWithNotification();
+        } catch (Exception e) {
+            // API 34+ throws SecurityException if the manifest-declared
+            // foregroundServiceType doesn't have a matching permission.
+            Log.e(TAG, "startForeground failed", e);
+            Toast.makeText(this,
+                "proxy service blocked: " + e.getMessage(),
+                Toast.LENGTH_LONG).show();
+            stopSelf();
+            return;
+        }
         startServer();
     }
 
@@ -45,18 +56,16 @@ public class ProxyService extends Service {
             manager.createNotificationChannel(channel);
         }
 
-        // Create intent to open MainActivity when notification is clicked
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-            this, 
-            0, 
-            ProxyManager.notificationIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        );
+        // Create intent to open MainActivity when notification is clicked.
+        // Build it locally rather than relying on the static
+        // ProxyManager.notificationIntent, which is null when the OS restarts
+        // the service and would NPE PendingIntent.getActivity.
+        PendingIntent pendingIntent = buildTapIntent();
 
         // Build notification
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Proxy Server Running")
-            .setContentText("Port: " + PORT + " • Tap to open")
+            .setContentText("Port: " + PORT + " * Tap to open")
             .setSmallIcon(android.R.drawable.ic_menu_rotate)
             .setContentIntent(pendingIntent)
             .setOngoing(true)  // Make it non-dismissable
@@ -86,12 +95,7 @@ public class ProxyService extends Service {
     private void updateNotification(String content) {
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-            this, 
-            0, 
-            ProxyManager.notificationIntent, 
-            PendingIntent.FLAG_IMMUTABLE
-        );
+        PendingIntent pendingIntent = buildTapIntent();
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Proxy Server")
@@ -112,7 +116,10 @@ public class ProxyService extends Service {
         }
 
         // Remove notification
-        stopForeground(true);
+        // Use the AndroidX compat shim; it maps to the new STOP_FOREGROUND_REMOVE
+        // flag on API 24+ and the old boolean overload on older APIs.
+        androidx.core.app.ServiceCompat.stopForeground(this,
+            androidx.core.app.ServiceCompat.STOP_FOREGROUND_REMOVE);
 
         Toast.makeText(this, "Proxy server stopped", Toast.LENGTH_SHORT).show();
         super.onDestroy();
@@ -122,6 +129,31 @@ public class ProxyService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        // Don't auto-restart on process death. The user explicitly starts/stops
+        // this via the "Local" proxy toggle; a silent OS restart would surface
+        // as a mystery notification.
+        return START_NOT_STICKY;
+    }
+
+    /** Build a PendingIntent that opens MainActivity when the user taps the
+     *  foreground-service notification. Never null; survives static-field loss
+     *  if the OS restarts us. */
+    private PendingIntent buildTapIntent() {
+        Intent launch;
+        try {
+            launch = new Intent(this,
+                Class.forName("lk.live.aplusewings.MainActivity"));
+        } catch (ClassNotFoundException e) {
+            launch = new Intent();
+            launch.setPackage(getPackageName());
+        }
+        launch.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        int flags = PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT;
+        return PendingIntent.getActivity(this, 0, launch, flags);
     }
 }
 
